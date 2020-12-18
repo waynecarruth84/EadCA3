@@ -1,0 +1,69 @@
+﻿@page "/AllPokemon"
+@inject HttpClient Http
+@using EadCA3X00138115.Shared
+<h3>AllPokemon</h3>
+@if (gen == null)
+{
+    <p>Error with Api ...</p>
+}
+else
+{
+    <div>
+        Please choose a generation you want results from
+        <select class="form-control" @bind="Generation" @onclick="@GetDataAsync">
+            <option selected disabled value="-1"> Choose a Generation</option>
+            <option value=1>Gen 1</option>
+            <option value=2>Gen 2</option>
+            <option value=3>Gen 3</option>
+            <option value=4>Gen 4</option>
+            <option value=5>Gen 5</option>
+            <option value=6>Gen 6</option>
+            <option value=7>Gen 7</option>
+        </select>
+    </div>
+
+    <table class="table">
+        @foreach (var specy in gen.pokemon_species)
+        {
+            <thead>
+                <tr>
+                    <th>Pokemon Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> @specy.name</td>
+
+                </tr>
+            </tbody>
+        }
+    </table>
+}
+
+@code {
+    private Generations gen;
+    private string Generation = "1";
+    private string errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetDataAsync();
+    }
+
+    private async Task GetDataAsync()
+    {
+        try
+        {
+            string uri = "https://pokeapi.co/api/v2/generation/"+ Generation;
+            gen = await Http.GetFromJsonAsync<Generations>(uri);
+            errorMessage = String.Empty;
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+
+
+}

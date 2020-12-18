@@ -1,0 +1,44 @@
+﻿@page "/Pokemon"
+@inject HttpClient Http
+@using EadCA3X00138115.Shared
+<h3>Pokemon</h3>
+@if (pokemons == null)
+{
+    <p>Error with APi </p>
+}
+else
+{
+    <div class="mb-2 p-3">
+        input a pokemon name
+        <p>Note: Api is slow to respond please allow time for page to refresh</p>
+        <input type="text" class="form-control" @bind="pokemonName" @onkeyup="@GetDataAsync" />
+
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pokedex Number</th>
+                <th>Name</th>
+                <th>Height(in decimeters)</th>
+                <th>Weight(in hectograms)</th>
+                <th>Order</th>
+                <th>types</th>
+            </tr>
+        </thead>
+        @foreach (var type in pokemons.types)
+        {
+        <tbody>
+            <tr>
+                <td>@pokemons.id</td>
+                <td>@pokemons.name</td>
+                <td>@pokemons.height</td>
+                <td>@pokemons.weight</td>
+                <td>@pokemons.order</td>
+                <td>@type.type.name </td>
+            </tr>
+        </tbody>
+        }
+    </table>
+   
+}
+
